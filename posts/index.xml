@@ -6,7 +6,7 @@
     <description>Recent content in Posts on triknife</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 15 Apr 2021 23:39:49 +0530</lastBuildDate><atom:link href="https://tricknife.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 01 Apr 2023 14:47:03 +0800</lastBuildDate><atom:link href="https://tricknife.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Theme Documentation - Basics</title>
       <link>https://tricknife.github.io/posts/theme-documentation-basics/</link>
@@ -41,6 +41,26 @@ Post This is the default blog post type which will be shown in your &amp;ldquo;P
     </item>
     
     <item>
+      <title>初识：Docker</title>
+      <link>https://tricknife.github.io/posts/%E5%88%9D%E8%AF%86docker/</link>
+      <pubDate>Sat, 01 Apr 2023 14:47:03 +0800</pubDate>
+      
+      <guid>https://tricknife.github.io/posts/%E5%88%9D%E8%AF%86docker/</guid>
+      <description>什么是 Docker? 要认识什么是 Docker, 首先需要了解一个概念：容器(container). 容器是一个标准的软件单元，它封装代码及其所有依赖项，以便应用程序从一个计算环境快速可靠地运行到另一个环境。容器将软件与其环境隔离开来，使得软件可以在不同的环境工作一致，不用再费心环境与依赖。
+而 Docker 就是一个开源的应用容器引擎，它可以创建容器以及基于容器运行的程序，广泛应用于 PaaS 产品中。Docker 基于 Golang 开发，通过 Linux 内核的 cgroup，namespace，以及 OverlayFS 类的 Union FS 等技术，从文件系统、网络互联到对进程进行封装隔离（在主机上以一个沙盒进程的形式工作）等, 属于操作系统层面的虚拟化技术。
+容器在几十年前首次出现，早期版本有 FreeBSD Jails 和 AIX Workload Partitions，但大多数现代开发人员都认为 2013 年 Docker的出现开启了现代容器时代。
+OpenStack、Cloudstack 这样的技术是解决IAAS层的问题，而容器技术的诞生其实主要解决了PAAS的层的技术实现。
+虚拟化，虚拟机，容器化，容器？ Docker 是内核级，操作系统层次的虚拟化技术，这里涉及到两个名词：操作系统和虚拟化。
+操作系统就是管理计算机的硬件软件和资源，是覆盖在硬件上的第一层软件，并且为软件运行提供通用服务的系统软件，它的功能包括：
+硬件管理，包括分配CPU时间、内存；从网络、存储设备等IO设备读写数据。 软件管理，软件的运行，线程、进程调度等。 为软件提供运行环境，这个运行环境通常一部分由操作系统内核(Kernel, 是计算机硬件与其进程之间的核心接口) 提供，另一部分由运行库(Runtime Library) 提供。 虚拟化(Virtualization) 是一个通用的概念，是一种资源管理技术。是指将计算机的各种实体资源，如服务器、网络、内存及存储等，予以抽象、转换后呈现出来，打破实体结构间的不可切割的障碍，使用户可以用比原本的组态更好的方式来应用这些资源。
+基于软件的虚拟化对象所在的层次，又可以分为应用虚拟化和平台虚拟化（容器和虚拟机即属于这个范畴）。前者指的是一些模拟设备比如 Wine， 后者可以分为以下子类：
+完全虚拟化。虚拟机模拟完整的底层硬件环境和特权指令的执行过程，客户操作系统(Guest OS) 无需修改。如 VirtualBox、 VMware Workstatio 等。 硬件辅助虚拟化。利用硬件（主要是CPU）辅助支持处理敏感指令来实现完全虚拟化的功能，客户操作系统无需修改。如KVM. 部分虚拟化。只对部分硬件资源进行虚拟化，客户操作系统需要进行修改。 超虚拟化(paravirtualization)。部分硬件接口以软件的形式提供给客户机操作系统，客户操作系统需要进行修改。 操作系统级虚拟化。内核通过创建多个虚拟的操作系统实例（内核和库）来隔离不同的进程。容器相关技术就属于这个范畴。 虚拟机的虚拟化技术通常是指使用软件，在计算机硬件上创建一个抽象层，能够将单台计算机的硬件元素（处理器、内存、存储等）分成多个虚拟计算机（通常称为虚拟机 (VM)）。每个虚拟机都会运行自己的操作系统（Guest OS），其行为就像一台独立的计算机，即使它只在一部分实际底层计算机硬件上运行。
+物理资源的虚拟化由 Hypervisor 来实现，有两种类型，感兴趣可以自行了解。它处于计算机物理层和虚拟机之间，能够管理计算机的物理资源并分配给不同的虚拟环境，既可以运行在操作系统上，也可以直接安装在硬件上。
+虚拟化可以更高效地利用物理计算机硬件，提高组织在硬件投资方面的投资回报率，可以说虚拟化技术是云计算的根基。云计算供应商可以利用这项技术为客户提供一系列服务，包括：
+基础架构即服务 (IaaS)：可根据需求配置的虚拟化服务器、存储和网络资源。 平台即服务 (PaaS)：虚拟化的开发工具、数据库和其他基于云的服务，可用于构建您自己的基于云的应用和解决方案。 软件即服务 (SaaS)：在云端使用的软件应用。 SaaS 是从硬件进行最大程度抽象的基于云的服务。 服务器虚拟化在硬件中重现整台计算机，然后运行整个操作系统，再由操作系统运行一个应用。这比完全没有虚拟化更有效，但它仍然为运行的每个应用复制不必要的代码和服务。而容器则采用了另一种方法。它们共享底层操作系统内核，仅运行应用及其依赖的内容，如软件库和环境变量。容器内的应用进程直接运行于宿主的内核，容器内没有自己的内核，而且也没有进行硬件虚拟，这使得容器体量更小，部署速度更快。</description>
+    </item>
+    
+    <item>
       <title>Emoji Support</title>
       <link>https://tricknife.github.io/posts/emoji-support/</link>
       <pubDate>Thu, 01 Oct 2020 17:55:28 +0800</pubDate>
@@ -60,6 +80,15 @@ Gone camping! {?:}tent: Be back soon. That is so funny!</description>
       
       <guid>https://tricknife.github.io/posts/lorem-ipsum/</guid>
       <description>Heading 1 &amp;ldquo;Lorem ipsum dolor sit amet, consectetaur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://tricknife.github.io/posts/%E4%B8%B4%E6%97%B6%E8%AE%B0%E5%BD%95/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://tricknife.github.io/posts/%E4%B8%B4%E6%97%B6%E8%AE%B0%E5%BD%95/</guid>
+      <description></description>
     </item>
     
   </channel>

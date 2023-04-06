@@ -6,7 +6,25 @@
     <description>Recent content in Tags on triknife</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 15 Apr 2021 23:39:49 +0530</lastBuildDate><atom:link href="https://tricknife.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 01 Apr 2023 14:47:03 +0800</lastBuildDate><atom:link href="https://tricknife.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>docker</title>
+      <link>https://tricknife.github.io/tags/docker/</link>
+      <pubDate>Sat, 01 Apr 2023 14:47:03 +0800</pubDate>
+      
+      <guid>https://tricknife.github.io/tags/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>初识系列</title>
+      <link>https://tricknife.github.io/tags/%E5%88%9D%E8%AF%86%E7%B3%BB%E5%88%97/</link>
+      <pubDate>Sat, 01 Apr 2023 14:47:03 +0800</pubDate>
+      
+      <guid>https://tricknife.github.io/tags/%E5%88%9D%E8%AF%86%E7%B3%BB%E5%88%97/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>def</title>
       <link>https://tricknife.github.io/tags/def/</link>
