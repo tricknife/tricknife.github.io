@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        :root {
+            --accent-color: #FF4D4D;
+        }
+    </style>
+
+    
+    
+    
+    
+    
+    
+
+    
+    <title>Docker 实践</title>
+    <meta name="description" content="如何使用 Docker">
+    <meta name="keywords" content='blog, gokarna, hugo'>
+
+    <meta property="og:url" content="https://tricknife.github.io/posts/docker-%E5%AE%9E%E8%B7%B5/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Docker 实践">
+    <meta property="og:description" content="如何使用 Docker">
+    <meta property="og:image" content="/images/avatar.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Docker 实践">
+    <meta name="twitter:description" content="如何使用 Docker">
+    <meta property="twitter:domain" content="https://tricknife.github.io/posts/docker-%E5%AE%9E%E8%B7%B5/">
+    <meta property="twitter:url" content="https://tricknife.github.io/posts/docker-%E5%AE%9E%E8%B7%B5/">
+    <meta name="twitter:image" content="/images/avatar.png">
+
+    
+    <link rel="canonical" href="https://tricknife.github.io/posts/docker-%E5%AE%9E%E8%B7%B5/" />
+
+    <link rel="stylesheet" type="text/css" href="https://tricknife.github.io//css/normalize.min.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" type="text/css" href="https://tricknife.github.io//css/main.css">
+    <link disabled id="dark-theme" rel="stylesheet" href="https://tricknife.github.io//css/dark.css">
+
+    <script src="https://tricknife.github.io//js/svg-injector.min.js"></script>
+    <script src="https://tricknife.github.io//js/feather-icons.min.js"></script>
+    <script src="https://tricknife.github.io//js/main.js"></script>
+
+    
+    
+        <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css" integrity="sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js" integrity="sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          // customised options
+          // • auto-render specific keys, e.g.:
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+          ],
+          // • rendering keys, e.g.:
+          throwOnError : false
+        });
+      });
+    </script>
+  
+    
+</head>
+<body>
+        <script type="text/javascript">
+            
+            setThemeByUserPref();
+        </script><header class="header">
+    <nav class="header-nav">
+
+        
+        <div class="avatar">
+            <a href="https://tricknife.github.io/">
+                <img src="https://tricknife.github.io//images/avatar.png" alt="avatar" />
+            </a>
+        </div>
+        
+
+        <div class="nav-title">
+            <a class="nav-brand" href="https://tricknife.github.io/">triknife</a>
+        </div>
+
+        <div class="nav-links">
+            
+            <div class="nav-link">
+                <a href="https://tricknife.github.io/"><span data-feather='home'></span> Home </a>
+            </div>
+            
+            <div class="nav-link">
+                <a href="https://tricknife.github.io/posts/"><span data-feather='book'></span> Posts </a>
+            </div>
+            
+            <div class="nav-link">
+                <a href="https://tricknife.github.io/projects/"><span data-feather='code'></span> Projects </a>
+            </div>
+            
+            <div class="nav-link">
+                <a href="https://tricknife.github.io/tags/"><span data-feather='tag'></span> Tags </a>
+            </div>
+            
+            <div class="nav-link">
+                <a href="https://github.com/tricknife"><span data-feather='github'></span>  </a>
+            </div>
+            
+            <div class="nav-link">
+                <a href="https://tricknife.github.io/index.xml"><span data-feather='rss'></span>  </a>
+            </div>
+            
+
+            <span class="nav-icons-divider"></span>
+            <div class="nav-link dark-theme-toggle">
+                <span id="dark-theme-toggle-screen-reader-target" class="sr-only"></span>
+                <a>
+                    <span id="theme-toggle-icon" data-feather="moon"></span>
+                </a>
+            </div>
+
+            <div class="nav-link" id="hamburger-menu-toggle">
+                <span id="hamburger-menu-toggle-screen-reader-target" class="sr-only">menu</span>
+                <a>
+                    <span data-feather="menu"></span>
+                </a>
+            </div>
+
+            
+            <ul class="nav-hamburger-list visibility-hidden">
+                
+                <li class="nav-item">
+                    <a href="https://tricknife.github.io/"><span data-feather='home'></span> Home </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="https://tricknife.github.io/posts/"><span data-feather='book'></span> Posts </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="https://tricknife.github.io/projects/"><span data-feather='code'></span> Projects </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="https://tricknife.github.io/tags/"><span data-feather='tag'></span> Tags </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="https://github.com/tricknife"><span data-feather='github'></span>  </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="https://tricknife.github.io/index.xml"><span data-feather='rss'></span>  </a>
+                </li>
+                
+                <li class="nav-item dark-theme-toggle">
+                    <span id="dark-theme-toggle-screen-reader-target" class="sr-only">theme</span>
+                    <a>
+                        <span id="theme-toggle-icon" data-feather="moon"></span>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+</header>
+<main id="content">
+    <div class="post container">
+    <div class="post-header-section">
+        <h1>Docker 实践</h1>
+        <small role="doc-subtitle">如何使用 Docker</small>
+        <p class="post-date">
+            April 5, 2023
+        </p>
+
+        <ul class="post-tags">
+        
+        </ul>
+    </div>
+
+    <div class="post-content">
+        <p>
+            <p>注：<code>[]</code> 包含的表示可选子命令、标识或参数，非必填； <code>&lt;&gt;</code> 包含的变量表示这是一个实际参数。</p>
+<h2 id="服务端todo">服务端(TODO)</h2>
+<h2 id="镜像">镜像</h2>
+<p>关于镜像一些常用命令。</p>
+<h3 id="查看本地镜像">查看本地镜像</h3>
+<pre tabindex="0"><code>docker image ls [&lt;OPTIONS&gt;] [&lt;REPOSITORY&gt;[:&lt;TAG&gt;]]
+或
+docker images
+</code></pre><p>展示所有顶层的镜像，输出列表包含了仓库名、标签、镜像 ID、创建时间以及所占用的空间。</p>
+<p><code>OPTIONS</code> 可选项如下：</p>
+<ul>
+<li>
+<p><code>-a</code> 或 <code>--all</code>: 展示所有镜像，包括中间层。</p>
+</li>
+<li>
+<p><code>--digests</code>: 额外展示摘要信息。</p>
+</li>
+<li>
+<p><code>-f</code> 或 <code>--filter</code>:  根据后接的参数过滤输出。</p>
+</li>
+<li>
+<p><code>--format</code>: 使用Go 的 template 指定格式输出。</p>
+<p>eg: <code> docker image ls --format &quot;{{.ID}}: {{.Repository}}</code></p>
+</li>
+<li>
+<p><code>--no-trunc</code>: 不做截断，可以展示完整的镜像 ID</p>
+</li>
+<li>
+<p><code>-q</code> 或 <code>--quiet</code>: 只展示镜像的 ID.</p>
+</li>
+</ul>
+<h3 id="搜索镜像">搜索镜像</h3>
+<pre tabindex="0"><code>docker search [OPTIONS] &lt;TERM&gt;
+</code></pre><p>在 Docker Hub 搜索镜像，默认展示 25 个结果。</p>
+<h3 id="下载镜像">下载镜像</h3>
+<pre tabindex="0"><code>docker [image] pull [&lt;OPTIONS&gt;] &lt;IMAGE&gt;[:&lt;TAG&gt;]
+</code></pre><p>根据拉取的镜像实际情况，注意是否有 Registry 和 Namespace, 没有则表示拉取 Docker Hub 的官方镜像。</p>
+<p><code> TAG</code> 选项如果不填，则默认会拉取最新的（即 <code> latest</code> 版本）</p>
+<p><code>OPTIONS</code> 可选项如下：</p>
+<ul>
+<li>
+<p><code>-a</code> 或 <code> --all-tags</code>: 选择所有标签的镜像</p>
+</li>
+<li>
+<p><code>--disable-content-trust</code>: 跳过校验</p>
+</li>
+<li>
+<p><code>--platform</code>: 如果服务器是多平台的，则可以设置平台</p>
+</li>
+<li>
+<p><code>-q</code> 或 <code>--quiet</code></p>
+</li>
+</ul>
+<h3 id="基于-dockerfile-构建镜像">基于 Dockerfile 构建镜像</h3>
+<pre tabindex="0"><code>docker [image] build [&lt;OPTIONS&gt;] &lt;CONTEXT:PATH | URL | -&gt;
+</code></pre><p>根据 CONTEXT 目录下的 Dockerfile 构建镜像, 也可以是远程地址如 Git 仓库或标准输入。</p>
+<pre tabindex="0"><code>docker build - &lt; Dockerfile
+cat Dockerfile | docker build -
+docker build http://server/context.tar.gz
+#指定分支为 master，构建目录为 /amd64/hello-world/
+docker build -t hello-world https://github.com/docker-library/hello-world.git#master:amd64/hello-world
+</code></pre><p><code>OPTIONS</code> 部分可选项如下：</p>
+<ul>
+<li><code>-f</code> 或 <code>--file</code>: 用来指示目录下的 Dockerfile 名称，默认值是 <code>PATH/Dockerfile</code></li>
+<li><code>-t</code> 或 <code>--tag</code>:  以 <code>name:tag</code> 格式给制作的镜像命名</li>
+<li><code>--build-arg</code>: 设置镜像构建期间的 <code>ARG</code> 参数</li>
+<li><code>--cpu-shares</code>: 设置 cpu 使用权重</li>
+<li><code>--cpu-period</code>: 限制 CPU CFS 周期；</li>
+<li><code>--cpu-quota</code>:  限制 CPU CFS 配额；</li>
+<li><code>--cpuset-cpus</code>:  指定使用的 CPU id；</li>
+<li><code>--cpuset-mems</code>:  指定使用的内存 id；</li>
+<li><code>--no-cache</code>: 创建镜像的过程不使用缓存</li>
+<li><code>-m</code>: 设置内存最大值</li>
+<li><code>--rm</code>: 成功后删除中间层</li>
+</ul>
+<h4 id="是否还有其他方式制作镜像">是否还有其他方式制作镜像</h4>
+<ul>
+<li>加载镜像文件</li>
+</ul>
+<pre tabindex="0"><code>docker [image] load [&lt;OPTIONS&gt;]
+</code></pre><p>可以从 tar 文件或标准输入中导入镜像文件，默认是从输入中获取，可以通过 <code>-i</code> 或 <code>--input</code> 选择压缩文件</p>
+<p>该命令对应保存镜像文件命令：</p>
+<pre tabindex="0"><code>docker [image] save [&lt;OPTIONS&gt;] &lt;image...&gt;
+</code></pre><ul>
+<li>导入镜像文件</li>
+</ul>
+<pre tabindex="0"><code>docker [image] import [&lt;OPTIONS&gt;] &lt;file|URL|-&gt; [&lt;REPOSITORY&gt;[:&lt;TAG&gt;]]
+</code></pre><p>可以从本地文件、远程 Web 文件，甚至是从标准输入中导入压缩包，压缩包将会在镜像 <code>/</code> 目录展开，并直接作为镜像第一层提交。</p>
+<ul>
+<li>基于容器提交，详情见容器 <code>commit</code> 操作。</li>
+</ul>
+<h3 id="查看镜像的构建历史">查看镜像的构建历史</h3>
+<pre tabindex="0"><code>docker [image] history [&lt;OPTIONS&gt;] &lt;IMAGE&gt;
+</code></pre><p><code>OPTIONS</code> 可选项如下:</p>
+<ul>
+<li><code>--format</code>: Pretty-print images using a Go template</li>
+<li><code>-H</code>, <code>--human</code> : Print sizes and dates in human readable format   (default true)</li>
+<li><code>--no-trunc</code> :Don&rsquo;t truncate output</li>
+<li><code>-q</code>, <code>--quiet</code> :Only show image IDs</li>
+</ul>
+<h3 id="增加标签">增加标签</h3>
+<pre tabindex="0"><code>docker [image] tag &lt;SOURCE_IMAGE&gt;[:&lt;TAG&gt;] &lt;TARGET_IMAGE&gt;[:&lt;TAG&gt;]
+</code></pre><p>以一个已有的镜像为基础，打上标签，生成一个新的镜像记录。</p>
+<h3 id="查看镜像信息">查看镜像信息</h3>
+<pre tabindex="0"><code>docker image inspect [&lt;OPTIONS&gt;] &lt;IMAGE...&gt;
+</code></pre><p><code>OPTIONS</code> 可选项：</p>
+<ul>
+<li><code>-f</code> 或 <code>--format</code>: 根据 Go template 输出</li>
+</ul>
+<h3 id="推送镜像">推送镜像</h3>
+<pre tabindex="0"><code>docker [image] push [&lt;OPTIONS&gt;] &lt;IMAGE&gt;[:&lt;TAG&gt;]
+</code></pre><p><code>OPTIONS</code> 可选项如下：</p>
+<ul>
+<li>
+<p><code>-a</code> 或 <code> --all-tags</code>: 选择所有标签的镜像</p>
+</li>
+<li>
+<p><code>--disable-content-trust</code>: 跳过校验</p>
+</li>
+<li>
+<p><code>-q</code> 或 <code>--quiet</code></p>
+</li>
+</ul>
+<h3 id="删除镜像">删除镜像</h3>
+<pre tabindex="0"><code>docker image rm|rmi|remove [&lt;OPTIONS&gt;] CONTAINER &lt;CONTAINER...&gt;
+</code></pre><p><code>CONTAINER...</code> 可以是空格分割的多个镜像 ID 或 镜像名、镜像摘要。</p>
+<p>删除分为两种，一种是 <code>Unstaged</code>, 一种是 <code>Deleted</code>. 前者只是将镜像的标签去除，并没有真正的删除镜像，当镜像的所有标签都被取消了，就会触发删除行为。</p>
+<p>同时，由于镜像分层，存在中间层复用的情况，因此删除镜像的时候，某些中间层可能因为被其他镜像使用，而不会在本次操作中被删除。</p>
+<p><code>OPTIONS</code> 可选项有：</p>
+<ul>
+<li><code>-f</code> 或 <code>--force</code>: 强制删除，即便有容器引用该镜像</li>
+<li><code>--no-prune</code>: 不要删除未带标签的父镜像</li>
+</ul>
+<p>该命令可以和查看镜像命令配合使用：</p>
+<p><code>docker image rm $(docker image ls -q redis)</code></p>
+<p><code>docker image rm $(docker image ls -q -f before=mongo:3.2)</code></p>
+<p>另外还有一个命令，可以清理没有使用的镜像：</p>
+<pre tabindex="0"><code>docker image prune
+</code></pre><h2 id="容器">容器</h2>
+<h3 id="通过镜像创建运行容器实例">通过镜像创建运行容器实例</h3>
+<p>启动容器有两种方式，一种是基于镜像新建一个容器并启动，另外一个是将在终止状态（<code>exited</code>）的容器重新启动。</p>
+<pre tabindex="0"><code>docker [container] run [&lt;OPTIONS&gt;] &lt;IMAGE&gt; [&lt;COMMAND&gt; [&lt;ARG...&gt;]]
+</code></pre><p>当利用 <code>docker run</code> 来创建容器时，涉及到的操作包括：</p>
+<ul>
+<li>检查本地是否存在指定的镜像，不存在就从 registry 下载</li>
+<li>利用镜像创建并启动一个容器</li>
+<li>分配一个文件系统，并在只读的镜像层外面挂载一层可读写层</li>
+<li>从宿主主机配置的网桥接口中桥接一个虚拟接口到容器中去</li>
+<li>从地址池配置一个 ip 地址给容器</li>
+<li>执行用户指定的应用程序</li>
+<li>执行完毕后容器被终止</li>
+</ul>
+<p>该命令 <code>OPTIONS</code> 可选项众多，常用的有：</p>
+<ul>
+<li>
+<p><code>-t</code> 或 <code>--tty</code> : 打开一个伪终端。</p>
+</li>
+<li>
+<p><code>-i</code> 或 <code>--interactive</code>: 维持标准输入，与 <code>-t</code> 配合使用</p>
+</li>
+<li>
+<p><code>-d</code> 或 <code>--detach</code>: 后台运行。如果不是后台运行的容器，退出启动终端后（与 docker 服务端断开），容器会退出。</p>
+</li>
+<li>
+<p><code>-h</code> 或 <code>--hostname</code>: 设置容器的机器命名</p>
+</li>
+<li>
+<p><code>--name</code>: 给容器命名</p>
+</li>
+<li>
+<p><code>-m</code>: 设置内存最大值</p>
+</li>
+<li>
+<p><code>-ip</code>: 显式指定 IPv4 地址</p>
+</li>
+<li>
+<p><code>-p</code> 或 <code>--publish</code>: 对容器外（主机）开放端口列表，配置端口映射，是一项非常重要的配置。</p>
+<table>
+<thead>
+<tr>
+<th>Flag value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-p 8080:80</code></td>
+<td>Map TCP port 80 in the container to port <code>8080</code> on the Docker host.</td>
+</tr>
+<tr>
+<td><code>-p 192.168.1.100:8080:80</code></td>
+<td>Map TCP port 80 in the container to port <code>8080</code> on the Docker host for connections to host IP <code>192.168.1.100</code>.</td>
+</tr>
+<tr>
+<td><code>-p 8080:80/udp</code></td>
+<td>Map UDP port 80 in the container to port <code>8080</code> on the Docker host.</td>
+</tr>
+<tr>
+<td><code>-p 8080:80/tcp -p 8080:80/udp</code></td>
+<td>Map TCP port 80 in the container to TCP port <code>8080</code> on the Docker host, and map UDP port <code>80</code> in the container to UDP port <code>8080</code> on the Docker host.</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><code>--rm</code>: 退出容器时删除该容器</p>
+</li>
+<li>
+<p><code>--mount</code>: 绑定数据卷，支持 <code>volume</code>、<code>bind</code>、<code>tmpfs</code> 三种类型</p>
+</li>
+<li>
+<p><code>-v</code> 或 <code>--volume</code>: 配置数据卷</p>
+</li>
+<li>
+<p><code>--network</code>: 连接到指定的网络</p>
+</li>
+</ul>
+<p><code>--mount</code> 和 <code>--volume</code> 两个都用于配置数据卷，最大的区别是后者把所有的选项组合在这一个字段中，前者则需要分开配置。具体来说：</p>
+<p><code>--mount</code>: 由多个逗号分割的键值对组成，格式为<code>key=value</code>, 有如下可配置项：<code>type</code>、<code>source|src</code> 和 <code>destination|target|dst</code>、<code>readonly</code>、<code>volume-opt</code> 分别表示挂载的类型（默认情况是 volume 类型），命名卷的名称（匿名卷省略该项）、挂载至容器内的目标路径、挂载的权限为只读（简写为ro）、一些其他配置项。</p>
+<pre tabindex="0"><code> docker run -d \
+  --name devtest \
+  --mount source=myvol2,target=/app,readonly \
+  nginx:latest
+</code></pre><p><code>--volume</code>: 由冒号分割的三个字段值组成，必须按照命名卷的名称（匿名卷省略该项）、容器内挂载的目标路径、逗号分割的配置项（可选）的顺序。</p>
+<pre tabindex="0"><code> docker run -d \
+  --name devtest \
+  -v myvol2:/app \
+  nginx:latest
+</code></pre><p>同时由上可知，如果需要指定卷 driver, 就只能用<code>--mount</code>. 更详细准确的说明见：<a href="https://docs.docker.com/storage/volumes/">volumes</a></p>
+<h3 id="容器启停">容器启停</h3>
+<p>停止正在运行的容器：</p>
+<pre tabindex="0"><code>docker [container] stop [&lt;OPTIONS&gt;] &lt;CONTAINER...&gt;
+</code></pre><p><code>OPTIONS</code> 可选项：</p>
+<ul>
+<li><code>-t</code> 或 <code>--time</code> : kill 容器之前等待容器完成资源销毁的秒数，默认是10。</li>
+</ul>
+<p>启动停止的容器：</p>
+<pre tabindex="0"><code>docker [container] start [&lt;OPTIONS&gt;] &lt;CONTAINER...&gt;
+</code></pre><p><code>OPTIONS</code> 可选项：</p>
+<ul>
+<li><code>-a</code> 或 <code>--attach</code>: 绑定 STDOUT/STDERR 并且转发信号量</li>
+<li><code>-i</code> 或 <code>--interactive</code>: 绑定容器的标准输入</li>
+</ul>
+<p>重新启动容器：</p>
+<pre tabindex="0"><code>docker [container] restart [&lt;OPTIONS&gt;] &lt;CONTAINER...&gt;
+</code></pre><p><code>OPTIONS</code> 可选项：</p>
+<ul>
+<li><code>-t</code> 或 <code>--time</code> : kill 容器之前等待容器完成资源销毁的秒数，默认是10。</li>
+</ul>
+<h3 id="在容器内执行命令">在容器内执行命令</h3>
+<pre tabindex="0"><code>docker [container] exec [&lt;OPTIONS&gt;] &lt;CONTAINER&gt; &lt;COMMAND&gt; [&lt;ARG...&gt;]
+</code></pre><p><code>OPTIONS</code> 可选项：</p>
+<ul>
+<li><code>-d</code> 或 <code>--detach</code>: Detached 模式：可以在后台运行命令</li>
+<li><code>-e</code> 或 <code>--env</code>: 可以设置一系列环境变量</li>
+<li><code>--env-file</code>: 可以从多个文件中读取环境变量</li>
+<li><code>-i</code> 或 <code>--interactive</code></li>
+<li><code>-t</code> 或 <code>--tty</code></li>
+<li><code>-u</code> 或 <code>--user</code>: 格式 <code>&lt;name|uid&gt;[:&lt;group|gid&gt;]</code></li>
+<li><code>-w</code> 或 <code>--workdir</code>: 设置容器工作目录</li>
+</ul>
+<h3 id="删除容器">删除容器</h3>
+<pre tabindex="0"><code>docker [container] rm [&lt;OPTIONS&gt;] &lt;CONTAINER...&gt;
+</code></pre><p><code>OPTIONS</code> 可选项：</p>
+<ul>
+<li><code>-f</code> 或 <code>--force</code>: 强制删除一个正在运行的容器，使用的是 <code>SIGKILL</code> 信号量</li>
+<li><code>-l</code> 或 <code>--link</code></li>
+<li><code>-v</code> 或 <code>--volumes</code>: 同时会删除容器关联的数据卷</li>
+</ul>
+<p>另外还有一个可以删除所有停止的容器：</p>
+<pre tabindex="0"><code>docker [container] prune [&lt;OPTIONS&gt;] 
+</code></pre><h3 id="查看容器列表">查看容器列表</h3>
+<pre tabindex="0"><code>docker container list|ps|ls [&lt;OPTIONS&gt;]
+</code></pre><p><code>OPTIONS</code> 可选项：</p>
+<ul>
+<li><code>-a</code> 或 <code>-all</code>: 展示所有容器。默认只展示运行中的容器。</li>
+<li><code>-f</code> 或 <code>--filter</code>: 过滤</li>
+<li><code>--format</code></li>
+<li><code>-n</code> 或 <code>--last</code>: 只展示 n 个最后创建的容器，默认值是 -1。该条件是包含所有状态的容器的。</li>
+<li><code>-l</code> 或 <code>--latest</code>: 展示最近创建的容器（包含所有状态）</li>
+<li><code>--no-trunc</code></li>
+<li><code>-q</code> 或 <code>--quiet</code>: 只展示 ID</li>
+<li><code>-s</code> 或 <code>--size</code>: 展示所有文件大小</li>
+</ul>
+<h3 id="查看容器信息">查看容器信息</h3>
+<p>查看详情：</p>
+<pre tabindex="0"><code>docker [container] inspect [&lt;OPTIONS&gt;] &lt;CONTAINER...&gt;
+</code></pre><p><code>OPTIONS</code> 可选项：</p>
+<ul>
+<li><code>-f</code> 或 <code>--format</code></li>
+<li><code>-s</code> 或 <code>--size</code></li>
+</ul>
+<p>查看端口映射：</p>
+<pre tabindex="0"><code>docker [container] port &lt;CONTAINER&gt; [&lt;PRIVATE_PORT&gt;/[&lt;protocol&gt;]]
+</code></pre><p>可以通过可选参数：容器端口和协议来筛选对应的映射。</p>
+<h3 id="连接容器">连接容器</h3>
+<pre tabindex="0"><code>docker [container] attach [&lt;OPTIONS&gt;] &lt;CONTAINER&gt;
+</code></pre><p>可以进入容器中已经运行的进程，并将当前终端连接到该进程的标准输入、输出和错误流 。<em>不推荐使用</em> 。多个窗口 attach 到同一个容器时，所有的窗口会同步显示，其中一个阻塞，所有都无法执行操作了。</p>
+<p><code>OPTIONS</code> 可选项：</p>
+<ul>
+<li><code>--sig-proxy</code>: 将所有接收到的信号代理到进程，默认是 true. 可以设为 false 来确保 Ctrl+C 时不会关闭容器。</li>
+<li><code>--detach-keys</code>: 配置本次连接退出的快捷键，默认是 <code>ctrl q</code> 和 <code>ctrl p</code></li>
+</ul>
+<p>推荐使用以下方式来对容器执行操作。</p>
+<pre tabindex="0"><code>docker [container] exec [&lt;OPTIONS&gt;] &lt;CONTAINER&gt; &lt;COMMAND&gt; [&lt;ARG...&gt;]
+</code></pre><p><code>OPTIONS</code> 可选项：</p>
+<ul>
+<li><code>-d</code> 或 <code>--detach</code>: Detach 模式</li>
+<li><code>--detach-keys</code>: 将容器切回后台的快捷键</li>
+<li><code>-i</code> 或 <code>--interactive</code></li>
+<li><code>-t</code> 或 <code>--tty</code></li>
+<li><code>-w</code> 或 <code>--workdir</code></li>
+<li><code>-e</code> 或 <code>--env</code></li>
+<li><code>--envfile</code></li>
+<li><code>--privileged</code></li>
+<li><code>-u</code> 或 <code>--user</code></li>
+</ul>
+<p>该命令的常用法为：<code>docker exec -it xxxx  /bin/bash</code>, 用于打开容器中的 bash 终端，从而与容器进行交互。</p>
+<h3 id="容器与主机的文件传输">容器与主机的文件传输</h3>
+<pre tabindex="0"><code>docker [container] cp [&lt;OPTIONS&gt;] &lt;CONTAINER&gt;:&lt;SRC_PATH&gt; &lt;HOST_DEST_PATH&gt;
+和
+docker [container] cp [&lt;OPTIONS&gt;] &lt;HOST_SRC_PATH&gt; &lt;CONTAINER&gt;:&lt;DEST_PATH&gt;
+</code></pre><p>该命令可以完成容器和主机中进行文件或文件夹的拷贝。</p>
+<h3 id="基于容器制作镜像">基于容器制作镜像</h3>
+<pre tabindex="0"><code>docker [container] [&lt;OPTIONS&gt;] commit &lt;CONTAINER&gt; [&lt;REPOSITORY&gt;[:&lt;TAG&gt;]]
+</code></pre><p>该命令可以将容器提交成一个新的镜像副本。默认情况下，正在提交的容器及其进程将在提交时暂停。</p>
+<p><code>OPTIONS</code> 可选项：</p>
+<ul>
+<li><code>-a</code> 或 <code>--author</code></li>
+<li><code>c</code> 或 <code>--change</code></li>
+<li><code>-m</code> 或 <code>--message</code></li>
+<li><code>p</code> 或 <code>--pause</code></li>
+</ul>
+<h2 id="网络">网络</h2>
+<p>连接在同一片网络中的容器才能互通。</p>
+<h3 id="查看网络">查看网络</h3>
+<pre tabindex="0"><code>docker network ls|list
+</code></pre><p>默认有三个，分别是 bridge、host、none</p>
+<h3 id="创建与删除网络">创建与删除网络</h3>
+<p>创建：</p>
+<pre tabindex="0"><code>docker network create [&lt;OPTIONS&gt;] &lt;NETWORK&gt; 
+</code></pre><p><code>OPTIONS</code> 常用可选项：</p>
+<ul>
+<li><code>--subnet</code>: 指定网段</li>
+<li><code>--driver</code>: 网络驱动，默认是 bridge</li>
+</ul>
+<p>删除：</p>
+<pre tabindex="0"><code>docker network rm|remove &lt;NETWORK...&gt;
+</code></pre><h3 id="连接与中断网络">连接与中断网络</h3>
+<p>连接：</p>
+<pre tabindex="0"><code>docker nertwork connect [&lt;OPTIONS&gt;] &lt;NETWORK&gt; &lt;CONTAINER&gt;
+</code></pre><p>将一个容器连接至该网络。</p>
+<p><code>OPTIONS</code> 可选项：</p>
+<ul>
+<li><code>alias</code>: 为容器添加网络范围的别名</li>
+<li><code>--driver-opt</code>: 网络驱动程序选项</li>
+<li><code>--ip</code>: 显式指定 IPv4 地址</li>
+<li><code>--ip6</code></li>
+<li><code>--link</code>: 增加一个其他容器的链接。容器的互联是在源和目标容器之间创建连接关系，通过容器名访问源容器的快速交互方式。</li>
+<li><code>--link-local-ip</code>: 为容器添加一个链接本地地址</li>
+</ul>
+<p>中断：</p>
+<pre tabindex="0"><code>docker nertwork disconnect [&lt;OPTIONS&gt;] &lt;NETWORK&gt; &lt;CONTAINER&gt;
+</code></pre><h2 id="数据卷">数据卷</h2>
+<h3 id="增删数据卷">增删数据卷</h3>
+<pre tabindex="0"><code>docker volume create [&lt;OPTIONS&gt;] &lt;VOLUME&gt;
+</code></pre><p><code>OPTIONS</code> 可选项：</p>
+<ul>
+<li><code>-d</code> 或 <code>--driver</code>: 指定卷驱动名，默认是 <code>local</code></li>
+<li><code>--label</code>: 设置元数据信息列表</li>
+<li><code>-o</code> 或 <code>--opt</code>: 设置驱动的具体选（map 类型值），默认是空 <code>map[]</code></li>
+</ul>
+<pre tabindex="0"><code>docker volume rm|remove [&lt;OPTIONS&gt;] &lt;VOLUME...&gt; 
+</code></pre><p><code>OPTIONS</code> 可选项：</p>
+<ul>
+<li><code>-f</code> 或 <code>--force</code></li>
+</ul>
+<pre tabindex="0"><code>docker volume prune [&lt;OPTIONS&gt;]
+</code></pre><h3 id="查看卷">查看卷</h3>
+<pre tabindex="0"><code>docker volume ls|list [&lt;OPTIONS&gt;]
+</code></pre><pre tabindex="0"><code>docker [volume] inspect [&lt;OPTIONS&gt;] &lt;VOLUME...&gt;
+</code></pre><h2 id="实践">实践</h2>
+<h3 id="编写-dockerfile">编写 Dockerfile</h3>
+<p>参考：[官方介绍](<a href="https://docs.docker.com/engine/reference/builder/">Dockerfile reference | Docker Documentation</a> )</p>
+<p>Dockerfile 由一行行命令语句组成，支持 <code>#</code> 开头的注释语句。</p>
+<p>Dockerfile 的主体内容分为：基础镜像信息、维护者信息、镜像操作指令、容器启动时命令。涉及到的部分指令：</p>
+<pre tabindex="0"><code>FROM               #基础镜像，指定用于构建的父级镜像，这一阶段的操作都基于该镜像来做。格式为FROM [--platform=&lt;platform&gt;] &lt;image&gt;[:&lt;tag&gt;] [AS &lt;name&gt;] AS的阶段命名可以在多阶段构建中继续引用。
+LABEL			  #为生成的镜像添加元数据标签信息
+STOPSIGNAL		   #特定的退出信号量
+USER			  #指定运行容器时的用户名或 UID，后续的 RUN 也会使用指定用户。
+ARG				  #声明变量，格式为ARG NAME[=VALUE], 可以在构建时指定值
+RUN                #镜像构建的时候需要运行的命令
+WORKDIR            #镜像的工作目录，所有相对路径名都从工作目录开始解释
+VOLUME             #创建挂载目录
+EXPOSE             #声明需要暴露的端口配置，不会实际暴露端口
+CMD                #指定该容器启动的时候要运行的命令，只有最后一个会生效，可被替代。如果在docker run时指定了命令，将不会执行CMD的内容。
+ENTRYPOINT         #指定该容器启动的时候要运行的命令，可以追加。如果在docker run时指定了命令，该命令会以命令行参数的形式传递到ENTRYPOINT中。
+ONBUILD            #当构建一个被继承DockerFile这个时候就会运行ONBUILD的指令，触发指令。
+COPY               #将文件拷贝到镜像。支持?、*等通配符。格式为COPY 源文件路径 目标文件路径。使用本地目录为源目录时，推荐使用该命令。
+ADD                #添加文件，格式与COPY相同，也支持正则，区别在于当文件为压缩文件时，会解压缩到目标路径。
+ENV                #构建的时候设置环境变量，格式为ENV KEY=VALUE
+</code></pre><p>Docker按顺序运行指令，一个<code>Dockerfile</code> 必须从指令 <code>FROM</code> 开始。在这之前，可以有解析器指令、注释和全局参数(<code>ARG</code>).</p>
+<p>其中解析器指令(Parser directives)是一条可选的注释形式的语句：<code>directive=value</code>. 该语句用于配置 Dockerfile 解析，会影响对 Dockerfile 中后续行的处理方式。解析器指令不会增加层的构建，也不会展示在构建步骤。 一旦一个注释，空行或构建指令被执行，Docker 就不再查找解析器指令。因此，全部的解析器指令必须放在 <code>Dockerfile</code> 最顶部。 目前支持的有：<code>syntax</code> 和 <code>escape</code>, 分别用于配置构建器的位置(This feature is only available when using the <a href="https://docs.docker.com/build/buildkit/">BuildKit</a> backend, and is ignored when using the classic builder backen ) 和转义符（默认是 <code>\</code>）</p>
+<p><code>ENV</code> 指令定义的变量在启动容器后仍然保留，可以使用 <code>docker run --env &lt;key&gt;=&lt;value&gt;...</code>  在运行时覆盖环境变量。配置的环境变量可以被这些指令支持：</p>
+<ul>
+<li><code>ADD</code>、<code>COPY</code>、<code>ENV</code>、<code>EXPOSE</code>、<code>FROM</code>、<code>LABEL</code>、<code>STOPSIGNAL</code>、<code>USER</code>、<code>VOLUME</code>、<code>WORKDIR</code>、<code>ONBUILD</code> (when combined with one of the supported instructions above)</li>
+</ul>
+<p>示例：</p>
+<pre tabindex="0"><code>ENV abc=hello
+ENV abc=bye def=$abc
+ENV ghi=$abc
+</code></pre><p><code>ARG</code> 定义的参数只会存在于镜像构建过程，启动容器后并不保留这些变量。如果在 <code>FROM</code> 指令之前指定，那么只能用于 <code>FROM</code> 指令中 。同时可以使用 <code>docker build --build-arg &lt;arg&gt;=&lt;value&gt;...</code> 来设置变量值。使用示例：</p>
+<pre tabindex="0"><code>ARG  CODE_VERSION=latest
+FROM base:${CODE_VERSION}
+CMD  /code/run-app
+
+FROM extras:${CODE_VERSION}
+CMD  /code/run-extras
+CMD  /code/run-extras
+</code></pre><p>Docker自带如下 <code>ARG</code> 参数，可以在其他指令中直接引用：</p>
+<ul>
+<li>HTTP_PROXY</li>
+<li>HTTPS_PROXY</li>
+<li>FTP_PROXY</li>
+<li>NO_PROXY</li>
+</ul>
+<p><code>RUN</code> 指令是构建过程中的重要指令，可以创建新的镜像层，通常用于安装软件包等准备工作。支持两种格式：</p>
+<ul>
+<li><code>RUN &lt;command&gt; </code>  shell 命令行格式</li>
+<li><code>RUN [&quot;executable&quot;, &quot;param1&quot;, &quot;param2&quot;] </code> exec 格式</li>
+</ul>
+<p>其中，shell 格式可以通过 <code>\</code> 来实现换行，在一个 <code>RUN</code> 指令中执行多个命令，导致过长时很好用：</p>
+<pre tabindex="0"><code>RUN /bin/bash -c &#39;source $HOME/.bashrc &amp;&amp; \
+echo $HOME&#39;
+等价于
+/bin/bash -c &#39;source $HOME/.bashrc &amp;&amp; echo $HOME&#39;
+</code></pre><p>exec 格式会被解析成 JSON 数组，每一个参数只能使用双引号包含，<code>\</code> 符号需要进行转义，即使用 <code>\\</code> 来替代，用。并且该格式的参数不会把变量替换为真实值：<code>RUN [ &quot;echo&quot;, &quot;$HOME&quot; ] </code> 会直接把 &ldquo;$HOME&rdquo; 当成一个参数，而不会解析，用这种方式可以规避：<code>RUN [ &quot;sh&quot;, &quot;-c&quot;, &quot;echo $HOME&quot; ] </code>.</p>
+<p><code>CMD</code> 指令有三种格式：</p>
+<ul>
+<li><code>CMD [&quot;executable&quot;,&quot;param1&quot;,&quot;param2&quot;]</code> (<em>exec</em> form, this is the preferred form)</li>
+<li><code>CMD [&quot;param1&quot;,&quot;param2&quot;]</code> (as <em>default parameters to ENTRYPOINT</em>)</li>
+<li><code>CMD command param1 param2</code> (<em>shell</em> form)</li>
+</ul>
+<p>如果在 Dockerfile 里出现多个 <code>CMD</code>, 只有最后一个会生效；如果启动容器时候指定了运行的命令，则会覆盖掉 <code>CMD</code> 指定的命令。</p>
+<p>与 <code>CMD</code> 相似的指令是 <code>ENTRYPOINT</code>, 它也用于配置容器启动后执行的命令，通常只有一个，若有多个，最后一个生效。有两种格式：</p>
+<ul>
+<li><code>ENTRYPOINT [&quot;executable&quot;, &quot;param1&quot;, &quot;param2&quot;]</code></li>
+<li><code>ENTRYPOINT command param1 param2</code></li>
+</ul>
+<p>与 <code>CMD</code> 相比，它不可被 <code>docker run</code> 提供的参数覆盖，相反，运行时指定的命令会被其当成参数追加在原来的参数后。如果在 <code>ENTRYPOINT</code> 后还使用了 <code>CMD</code>, 那么 <code>CMD</code> 会被作为参数传递给 <code>ENTRYPOINT</code>.</p>
+<pre tabindex="0"><code>ENTRYPOINT [&#34;/bin/chamber&#34;, &#34;exec&#34;, &#34;production&#34;, &#34;--&#34;]
+CMD [&#34;/bin/service&#34;, &#34;-d&#34;]
+==
+/bin/chamber exec production -- /bin/service -d
+</code></pre><p>可以在<code>docker run</code> 时用 <code>--entrypoint</code> 这个 flag 来替换 <code>ENTRYPOINT</code> 命令。</p>
+<h2 id="相关阅读">相关阅读</h2>
+<p><a href="https://aws.amazon.com/cn/blogs/china/demystifying-entrypoint-cmd-docker/">Docker 的 ENTRYPOINT 和 CMD 参数探秘 | 亚马逊AWS官方博客 (amazon.com)</a></p>
+
+        </p>
+        
+    </div>
+
+    <div class="prev-next">
+        
+    </div>
+</div>
+
+<aside class="post-toc">
+    <nav id="toc">
+        <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#服务端todo">服务端(TODO)</a></li>
+        <li><a href="#镜像">镜像</a>
+          <ul>
+            <li><a href="#查看本地镜像">查看本地镜像</a></li>
+            <li><a href="#搜索镜像">搜索镜像</a></li>
+            <li><a href="#下载镜像">下载镜像</a></li>
+            <li><a href="#基于-dockerfile-构建镜像">基于 Dockerfile 构建镜像</a>
+              <ul>
+                <li><a href="#是否还有其他方式制作镜像">是否还有其他方式制作镜像</a></li>
+              </ul>
+            </li>
+            <li><a href="#查看镜像的构建历史">查看镜像的构建历史</a></li>
+            <li><a href="#增加标签">增加标签</a></li>
+            <li><a href="#查看镜像信息">查看镜像信息</a></li>
+            <li><a href="#推送镜像">推送镜像</a></li>
+            <li><a href="#删除镜像">删除镜像</a></li>
+          </ul>
+        </li>
+        <li><a href="#容器">容器</a>
+          <ul>
+            <li><a href="#通过镜像创建运行容器实例">通过镜像创建运行容器实例</a></li>
+            <li><a href="#容器启停">容器启停</a></li>
+            <li><a href="#在容器内执行命令">在容器内执行命令</a></li>
+            <li><a href="#删除容器">删除容器</a></li>
+            <li><a href="#查看容器列表">查看容器列表</a></li>
+            <li><a href="#查看容器信息">查看容器信息</a></li>
+            <li><a href="#连接容器">连接容器</a></li>
+            <li><a href="#容器与主机的文件传输">容器与主机的文件传输</a></li>
+            <li><a href="#基于容器制作镜像">基于容器制作镜像</a></li>
+          </ul>
+        </li>
+        <li><a href="#网络">网络</a>
+          <ul>
+            <li><a href="#查看网络">查看网络</a></li>
+            <li><a href="#创建与删除网络">创建与删除网络</a></li>
+            <li><a href="#连接与中断网络">连接与中断网络</a></li>
+          </ul>
+        </li>
+        <li><a href="#数据卷">数据卷</a>
+          <ul>
+            <li><a href="#增删数据卷">增删数据卷</a></li>
+            <li><a href="#查看卷">查看卷</a></li>
+          </ul>
+        </li>
+        <li><a href="#实践">实践</a>
+          <ul>
+            <li><a href="#编写-dockerfile">编写 Dockerfile</a></li>
+          </ul>
+        </li>
+        <li><a href="#相关阅读">相关阅读</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </nav>
+</aside>
+
+
+
+    
+
+        </main><footer class="footer">
+    <span>&copy; 2023 no idea what to write as footer</span>
+    <span>
+    </span>
+</footer>
+</body>
+</html>

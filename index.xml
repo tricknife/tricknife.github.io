@@ -6,7 +6,7 @@
     <description>Recent content on triknife</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 01 Apr 2023 14:47:03 +0800</lastBuildDate><atom:link href="https://tricknife.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 05 Apr 2023 19:34:43 +0800</lastBuildDate><atom:link href="https://tricknife.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Theme Documentation - Basics</title>
       <link>https://tricknife.github.io/posts/theme-documentation-basics/</link>
@@ -38,6 +38,27 @@ Post This is the default blog post type which will be shown in your &amp;ldquo;P
       
       <guid>https://tricknife.github.io/posts/markdown-syntax/</guid>
       <description>&lt;p&gt;This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Docker 实践</title>
+      <link>https://tricknife.github.io/posts/docker-%E5%AE%9E%E8%B7%B5/</link>
+      <pubDate>Wed, 05 Apr 2023 19:34:43 +0800</pubDate>
+      
+      <guid>https://tricknife.github.io/posts/docker-%E5%AE%9E%E8%B7%B5/</guid>
+      <description>注：[] 包含的表示可选子命令、标识或参数，非必填； &amp;lt;&amp;gt; 包含的变量表示这是一个实际参数。
+服务端(TODO) 镜像 关于镜像一些常用命令。
+查看本地镜像 docker image ls [&amp;lt;OPTIONS&amp;gt;] [&amp;lt;REPOSITORY&amp;gt;[:&amp;lt;TAG&amp;gt;]] 或 docker images 展示所有顶层的镜像，输出列表包含了仓库名、标签、镜像 ID、创建时间以及所占用的空间。
+OPTIONS 可选项如下：
+-a 或 --all: 展示所有镜像，包括中间层。
+--digests: 额外展示摘要信息。
+-f 或 --filter: 根据后接的参数过滤输出。
+--format: 使用Go 的 template 指定格式输出。
+eg: docker image ls --format &amp;quot;{{.ID}}: {{.Repository}}
+--no-trunc: 不做截断，可以展示完整的镜像 ID
+-q 或 --quiet: 只展示镜像的 ID.
+搜索镜像 docker search [OPTIONS] &amp;lt;TERM&amp;gt; 在 Docker Hub 搜索镜像，默认展示 25 个结果。
+下载镜像 docker [image] pull [&amp;lt;OPTIONS&amp;gt;] &amp;lt;IMAGE&amp;gt;[:&amp;lt;TAG&amp;gt;] 根据拉取的镜像实际情况，注意是否有 Registry 和 Namespace, 没有则表示拉取 Docker Hub 的官方镜像。</description>
     </item>
     
     <item>
