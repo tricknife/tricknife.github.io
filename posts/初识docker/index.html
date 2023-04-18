@@ -202,7 +202,7 @@
 <li>软件管理，软件的运行，线程、进程调度等。</li>
 <li>为软件提供运行环境，这个运行环境通常一部分由操作系统内核(Kernel, 是计算机硬件与其进程之间的核心接口) 提供，另一部分由运行库(Runtime Library) 提供。</li>
 </ul>
-<p>虚拟化(Virtualization) 是一个通用的概念，是一种资源管理技术。是指将计算机的各种实体资源，如服务器、网络、内存及存储等，予以抽象、转换后呈现出来，打破实体结构间的不可切割的障碍，使用户可以用比原本的组态更好的方式来应用这些资源。</p>
+<p>虚拟化 (Virtualization) 是一个通用的概念，是一种资源管理技术。是指将计算机的各种实体资源，如服务器、网络、内存及存储等，予以抽象、转换后呈现出来，打破实体结构间的不可切割的障碍，使用户可以用比原本的组态更好的方式来应用这些资源。</p>
 <p>基于软件的虚拟化对象所在的层次，又可以分为应用虚拟化和平台虚拟化（容器和虚拟机即属于这个范畴）。前者指的是一些模拟设备比如 Wine， 后者可以分为以下子类：</p>
 <ul>
 <li>完全虚拟化。虚拟机模拟完整的底层硬件环境和特权指令的执行过程，客户操作系统(Guest OS) 无需修改。如 VirtualBox、 VMware Workstatio 等。</li>
@@ -211,7 +211,7 @@
 <li>超虚拟化(paravirtualization)。部分硬件接口以软件的形式提供给客户机操作系统，客户操作系统需要进行修改。</li>
 <li>操作系统级虚拟化。内核通过创建多个虚拟的操作系统实例（内核和库）来隔离不同的进程。容器相关技术就属于这个范畴。</li>
 </ul>
-<p>虚拟机的虚拟化技术通常是指使用软件，在<strong>计算机硬件</strong>上创建一个抽象层，能够将单台计算机的硬件元素（处理器、内存、存储等）分成多个虚拟计算机（通常称为虚拟机 (VM)）。每个虚拟机都会运行自己的操作系统（Guest OS），其行为就像一台独立的计算机，即使它只在一部分实际底层计算机硬件上运行。</p>
+<p>虚拟机的虚拟化技术通常是指使用软件，在<strong>计算机硬件</strong>上创建一个抽象层，能够将单台计算机的硬件元素（处理器、内存、存储等）分成多个虚拟计算机（虚拟机）。每个虚拟机都会运行自己的操作系统（Guest OS），其行为就像一台独立的计算机，即使它只在一部分实际底层计算机硬件上运行。</p>
 <p><img src="/images/dockerandvm2.png" alt="VM"></p>
 <p>物理资源的虚拟化由 Hypervisor 来实现，有两种类型，感兴趣可以自行了解。它处于计算机物理层和虚拟机之间，能够管理计算机的物理资源并分配给不同的虚拟环境，既可以运行在操作系统上，也可以直接安装在硬件上。</p>
 <p>虚拟化可以更高效地利用物理计算机硬件，提高组织在硬件投资方面的投资回报率，可以说虚拟化技术是云计算的根基。云计算供应商可以利用这项技术为客户提供一系列服务，包括：</p>
@@ -313,29 +313,32 @@
 <p>可以看出 Docker 是一个 client-server 的架构，使用者通过客户端 A command line interface (CLI) client 与守护进程 dockerd 进行交互，后者负责构建、运行和分发 Docker 容器。而客户端与服务端之间可以通过 REST API 进行交互，也能通过 UNIX 套接字或者网络接口，客户端可以和服务端部署在同一个系统上，也能远程连接。除了架构图里的 Client, 还有一种叫做 Docker Compose, 它可以运行由一系列的容器组合成的应用程序。</p>
 <p>简单地了解一下相关的组件与概念：</p>
 <ul>
-<li>Docker deamon: 守护进程 <code>dockerd</code> 会监听 Docker API 请求并且管理 Docker 相关的资源对象：镜像(image)、容器(container)、网络(network) 和数据卷(volume). 同时它也可以和其他的 <code>dockerd</code> 进行通信。作为服务端执行真正的任务。</li>
+<li>Docker deamon: 守护进程 <code>dockerd</code> 会监听 Docker API 请求并且管理 Docker 相关的资源对象：镜像(image)、容器(container)、网络(network) 和数据卷(volume).  Docker 服务的启动实际上是调用了 <code>dockerd</code> 命令。</li>
 <li>Docker Host: 运行了 Docker deamon 的宿主机。</li>
 <li>Client: 客户端 <code>docker</code> 是和 Docker 引擎进行交互（包括远程或与多个守护进程 <code>dockerd</code>）的主要方式。我们可以使用命令如 <code>docker run</code>, 客户端会将命令通过 Docker API 发送给 <code>dockerd</code>, 由 <code>dockerd</code> 执行。</li>
 <li>Docker Objects: Docker 所管理的对象。当使用 Docker 的时候，实际上就是对这些对象进行操作，所有 Docker 的功能以及周边生态都围绕它们展开。
 <ul>
-<li>images : 镜像。是一个只读的模板，它必须包含运行应用程序所需的所有东西——基本的操作系统、所有依赖项、配置、脚本、二进制文件等等。该映像还包含容器的其他配置，例如环境变量、要运行的默认命令和其他元数据。它是服务和容器之间的桥梁，我们可以把服务制作成镜像，基于镜像生成容器。镜像的制作同时往往是基于一些基础镜像，如 ubuntu 系统，或者是 go1.20 环境。制作镜像我们需要编写一个 Dockerfile 来指示制作过程。</li>
-<li>containers : 容器。容器就是根据镜像模板创建运行的实例，是一个与其他主机进程隔离的进程，我们可以通过 Docker 客户端对它的创建、启停、删除等进行管理。</li>
-<li>volumes: 数据卷。数据卷是可供容器使用的特殊目录，将主机的操作系统目录直接映射进容器。当容器实例被删除时，对它的状态所进行的更改都会消失，所以对于需要持久化的数据，我们需要给它配置数据卷，将容器内的数据映射到主机环境中。</li>
+<li>images : 镜像，核心概念之一。是一个只读的模板，也是创建容器的基础，它必须包含运行应用程序所需的所有东西——基本的操作系统、所有依赖项、配置、脚本、二进制文件等等。该映像还包含容器的其他配置，例如环境变量、要运行的默认命令和其他元数据。它是服务和容器之间的桥梁，我们可以把服务制作成镜像，基于镜像生成容器。镜像的制作同时往往是基于一些基础镜像，如 ubuntu 系统，或者是 go1.20 环境。制作镜像我们需要编写一个 Dockerfile 来指示制作过程。</li>
+<li>containers : 容器，核心概念之一。容器就是根据镜像模板创建运行的实例，是一个与其他主机进程隔离的进程，我们可以通过 Docker 客户端对它的创建、启停、删除等进行管理。</li>
+<li>volumes : 数据卷。数据卷是可供容器使用的特殊目录，将主机的操作系统目录直接映射进容器。当容器实例被删除时，对它的状态所进行的更改都会消失，所以对于需要持久化的数据，我们需要给它配置数据卷，将容器内的数据映射到主机环境中。</li>
 <li>network : 网络。给容器配置网络，以提供外部访问容器或容器互联的服务。</li>
 </ul>
 </li>
-<li>Registry: 仓库注册服务器。是集中存放镜像仓库的地方，可以分为公共仓库和私有仓库。官方的仓库叫 Docker Hub.</li>
+<li>Registry : 仓库注册服务器。是集中存放镜像仓库的地方，可以分为公共仓库和私有仓库。官方的仓库叫 Docker Hub.</li>
 </ul>
 <h3 id="image">image</h3>
-<p>镜像是非常重要的 Obeject, 可以简单理解为环境+程序，通过 <code>image</code> 子命令来管理。 使用 <code>docker images</code> 可以列出本地主机上已经存在的镜像，每个镜像都有一个唯一的镜像ID，我们可以看到有以下几个数据：</p>
+<p>镜像是非常重要的对象, 可以简单理解为环境+程序，通过 <code>image</code> 子命令来管理。 使用 <code>docker image ls</code> 可以列出本地主机上已经存在的顶层镜像，每个镜像都有一个唯一的镜像ID，我们可以看到有以下几个数据：</p>
 <ul>
-<li>REPOSITORY：镜像来自于哪个仓库</li>
-<li>TAG：镜像的标签。用来标记镜像的不同版本等。</li>
-<li>IMAGE ID：镜像的唯一ID。</li>
+<li>REPOSITORY: 镜像来自于哪个仓库。仓库名、标签均为 <code>&lt;none&gt;</code> 的镜像被称为虚悬镜像，是由于新旧镜像同名，旧镜像名称被取消而出现的。</li>
+<li>TAG: 镜像的标签。用来标记镜像的不同版本等。</li>
+<li>IMAGE ID: 镜像的唯一ID。</li>
+<li>SIZE: 所占用的空间</li>
 </ul>
-<p>可以给同一个 IMAGE ID 的镜像做不同的TAG，推送到仓库里就会有两条记录。我们通常要用 tag 命令将构建的镜像改为：{namespace}/{镜像名}:{tag} 格式，再将其推送至 {namespace}/{镜像名} 仓库中。</p>
-<p>镜像，有一个重要的概念——<strong>分层</strong>。</p>
+<p>给同一个 IMAGE ID 的镜像不同的标签，会在列表中看到多条记录。我们通常要用 <code>tag</code> 命令将构建的镜像改为：{namespace}/{镜像名}:{tag} 格式，再将其推送至 {namespace}/{镜像名} 仓库中。</p>
+<p>有多种方式可以获得镜像：从远程拉取、基于 Dockerfile 制作、基于一个容器提交(commit)、从压缩包中导入等，其中最主要的还是基于 Dockerfile 制作。</p>
+<p>镜像，有一个重要的概念——<strong>分层(layer)</strong>.</p>
 <p>说镜像是 read-only template with instructions,  这是因为 Docker 的镜像并不是独立的二进制块，是由一层一层的文件系统组成（镜像层），所有的 Docker 镜像都起始于一个基础镜像层，当进行修改或增加新的内容时，就会在当前镜像层之上，创建一个新的镜像层（如果我们将多个命令合并在一条中，那么也只会生成一层）。可以使用 <code>docker history</code> 查看镜像的构建历史。在进行 <code>docker pull</code> 下载镜像的时候，通过脚本运行过程也可以看到镜像是分层下载并解压的。</p>
+<p>下载过程中给出了每一层的 ID 的前 12 位。并且下载结束后，给出该镜像完整的 <code>sha256</code> 的摘要，以确保下载一致性。</p>
 <p>容器销毁时，数据也会随之丢失，这是因为：当我们运行一个新的容器的时候，实际上是在镜像顶部新添加了一层 container layer 容器层。之后所有容器运行时对文件系统产生的修改实际都只影响这一层。删除容器后，可写层也会被删除。基础镜像保持不变。所以说在使用docker的过程中，<strong>在需要修改运行时容器文件数据的时候，尽量去重新构建镜像而不是直接修改容器内文件。如果重构镜像解决不了的问题，使用数据卷。</strong></p>
 <p><img src="/images/container-layers.jpg" alt="container-layer"></p>
 <p>因为每个容器都有其自己的可写容器层，并且所有更改都存储在该容器层中，所以多个容器可以共享对同一基础镜像的访问，但具有自己的数据状态。</p>
@@ -352,8 +355,8 @@
 <li>size：用于每个容器的可写层的数据量（在磁盘上）。</li>
 <li>virtual size：容器使用的只读镜像数据的数据量加上容器的可写层大小。多个容器可以共享部分或全部只读镜像数据。从同一镜像开始的两个容器共享100％的只读数据，而具有不同镜像的两个容器（具有相同的层）共享这些公共层。</li>
 </ul>
-<h3 id="registry">registry</h3>
-<p>repositories 是仓库，registry 是注册服务器，注册服务器就是存放仓库的具体服务器，是一个集中的存储、分发镜像的服务，它们的关系可以类比 Github 与 Project. 大部分时候，并不需要严格区分这两者的概念。仓库可以被认为是一个具体的项目，一个仓库通常集中存放一类镜像，用 tag 进行区分，比如 ubuntu:16.04、ubuntu:18.04.</p>
+<h3 id="registry-和-repository">registry 和 repository</h3>
+<p>repository 是仓库，registry 是注册服务器，注册服务器就是存放仓库的具体服务器，是一个集中的存储、分发镜像的服务，它们的关系可以类比 Github 与 Project. 大部分时候，并不需要严格区分这两者的概念。仓库可以被认为是一个具体的项目，一个仓库通常集中存放一类镜像，用 tag 进行区分，比如 ubuntu:16.04、ubuntu:18.04.</p>
 <pre tabindex="0"><code>注册服务器（Registry）
 ├─Repository（共有仓库）
 │  ├─镜像1
@@ -363,16 +366,16 @@
 │  ├─镜像3
 │  ├─镜像4
 │  ├─...更多镜像
-</code></pre><p>Docker Hub 是官方提供的最大的公共镜像仓库（其实就是指 Registry register.hub.docker.com）, 当我们创建了自己的镜像后，就可以将其推送到 Docker Hub 的镜像仓库里，在需要的时候拉取。当然我们也可以拉取别人公开的一些镜像，方便的使用对应的服务。 不过就像使用 Github, 你也需要去 <a href="https://hub.docker.com/">Docker Hub</a> 注册账号，通过 <code>docker login</code> 来登陆，登陆成功即可将自己制作的镜像推送到 Docker Hub.</p>
-<p>镜像仓库分为三个层级，分别是<strong>命名空间、镜像仓库和标签</strong>。 一个命名空间可以包含多个镜像仓库，一个镜像仓库下可以包含多个标签。</p>
-<p>仓库名称有如下几种不同的形式：</p>
+</code></pre><p>Docker Hub 是官方提供的最大的公共镜像仓库（其实就是指 Registry）, 当我们创建了自己的镜像后，就可以将其推送到 Docker Hub 的镜像仓库里，在需要的时候拉取。当然我们也可以拉取别人公开的一些镜像，方便的使用对应的服务。 不过就像使用 Github, 你也需要去 <a href="https://hub.docker.com/">Docker Hub</a> 注册账号，通过 <code>docker login</code> 来登陆，登陆成功即可将自己制作的镜像推送到 Docker Hub.</p>
+<p>镜像仓库分为三个层级，分别是<strong>命名空间、镜像仓库和标签</strong>。 一个命名空间可以包含多个镜像仓库，一个镜像仓库下可以包含多个标签，每个标签对应一个镜像。</p>
+<p>仓库有如下几种不同的形式：</p>
 <ul>
-<li>基础镜像（根镜像）仓库：如 centos, 这些仓库由官方提供，往往直接用镜像名作为仓库名。</li>
-<li>用户镜像：由 Docker Hub 的注册用户创建并维护，镜像仓库通常会加上用户名作为 namespace: {username}/{镜像名}. 用户名就是默认的命名空间，这个命令空间是用来区分 Docker Hub 上注册的不同用户或者组织（类似于 GitHub 上用户名的作用），如果读者想将自己的镜像上传到 Docker Hub 上供别人使用，则必须指定命名空间，否则上传会失败。</li>
-<li><code>[hub.c.163.com/library/nginx] </code> 这种指定 url 路径的方式，一般用于非 Docker Hub 上的镜像命名，例如一个第三方服务商提供的镜像或者开发者自己搭建的镜像中心，都可以使用这种命名方式命名。</li>
+<li>用户镜像仓库：由 Docker Hub 的注册用户创建并维护，镜像仓库通常会加上用户名作为 namespace: {username}/{镜像名}, 用户名就是默认的命名空间，这个命名空间是用来区分 Docker Hub 上注册的不同用户或者组织（类似于 GitHub 上用户名的作用）。</li>
+<li>基础镜像（根镜像）仓库：如果不给出用户名，则默认为 <code>library</code>，也就是官方镜像。 如 centos, 这些仓库由官方提供，往往直接用镜像名作为仓库名。</li>
+<li><code>[hub.c.163.com/library/nginx] </code> 这种指定路径的方式，一般用于非 Docker Hub 上的镜像命名，例如一个第三方服务商提供的镜像或者开发者自己搭建的镜像中心，都可以使用这种命名方式命名。</li>
 </ul>
 <p>Docker 将 Registry 也制作成了镜像，这意味着我们可以搭建自己的注册服务器：<code>docker run -d -p 5000:5000 --restart=always --name registry registry</code>.</p>
-<p>默认情况下，仓库会被创建在容器的 <code>/var/lib/registry</code> 目录下。你可以通过 -v 参数来将镜像文件存放在本地的指定路径。例如下面的例子将上传的镜像放到本地的 <code>/opt/data/registry</code> 目录。</p>
+<p>默认情况下，仓库会被创建在容器的 <code>/var/lib/registry</code> 目录下。你可以通过 <code>-v</code> 参数来将镜像文件存放在本地的指定路径。例如下面的例子将上传的镜像放到本地的 <code>/opt/data/registry</code> 目录。</p>
 <pre tabindex="0"><code>docker run -d \
     -p 5000:5000 \
     -v /opt/data/registry:/var/lib/registry \
@@ -390,24 +393,24 @@
 <li>主机上的其它进程不方便访问这些数据</li>
 <li>对这些数据的I/O会经过存储驱动，然后到达主机，引入了一层间接层，因此性能会有所下降</li>
 </ul>
-<p><code>volume</code> 对象就是用来解决容器的数据存储问题。通过 volume 子命令来管理。</p>
+<p><code>volume</code> 对象就是用来解决容器的数据存储问题。通过 <code>volume</code>子命令来管理。</p>
 <p>数据卷是 Docker Objects 之一，它是一个可供一个或多个容器使用的特殊目录，绕过 UFS，可以提供很多有用的特性：</p>
 <ul>
-<li><code>数据卷</code> 可以在容器之间共享和重用</li>
-<li>对 <code>数据卷</code> 的修改会立马生效</li>
-<li>对 <code>数据卷</code> 的更新，不会影响镜像，解耦应用和数据</li>
-<li><code>数据卷</code> 默认会一直存在，即使容器被删除</li>
+<li>可以在容器之间共享和重用</li>
+<li>对数据卷的修改会立马生效</li>
+<li>对数据卷的更新，不会影响镜像，解耦应用和数据</li>
+<li>数据卷默认会一直存在，即使容器被删除</li>
 </ul>
 <blockquote>
-<p>注意：<code>数据卷</code> 的使用，类似于 Linux 下对目录或文件进行 mount，镜像中的被指定为挂载点的目录中的文件会复制到数据卷中（仅数据卷为空时会复制）。</p>
+<p>注意：数据卷的使用，类似于 Linux 下对目录或文件进行 mount，镜像中的被指定为挂载点的目录中的文件会复制到数据卷中（仅数据卷为空时会复制）。</p>
 </blockquote>
-<p>我们可以通过命令直接操作这个对象：<code>$ docker volume create my-volume-object </code>。</p>
+<p>我们可以通过命令直接操作这个对象：<code>docker volume create my-volume-object </code>。</p>
 <p><code>数据卷</code> 是被设计用来持久化数据的，它的生命周期独立于容器，Docker 不会在容器被删除后自动删除 <code>数据卷</code>，并且也不存在垃圾回收这样的机制来处理没有任何容器引用的 <code>数据卷</code>。如果需要在删除容器的同时移除数据卷。可以在删除容器的时候使用 <code>docker rm -v</code> 这个命令。</p>
-<p>Docker 共提供了3种保存数据的方式：</p>
+<p>数据卷有三种类型：</p>
 <ol>
-<li><code>volumes</code> ：存于主机文件系统中的某个区域，由Docker管理（/var/lib/docker/volumes/ on linux）。非Docker进程不应该修改这些数据。卷是Docker中持久化数据的最好方式</li>
-<li><code>bind mount</code> ：绑定数据卷类型，存于主机文件系统中的任意位置。非Docker进程可以修改这些数据</li>
-<li><code>tmpfs mount</code>（Linux中）：存于内存中（注意，并不是持久化到磁盘）。在容器的生命周期中，它能被容器用来存放非持久化的状态或敏感信息</li>
+<li><code>volume</code> ：普通数据卷，存于主机文件系统中的某个区域，由Docker管理（<code>/var/lib/docker/volumes/</code>）。非Docker进程不应该修改这些数据。卷是Docker中持久化数据的最好方式.</li>
+<li><code>bind mount</code> ：绑定数据卷，映射到主机文件系统中的任意位置。非Docker进程可以修改这些数据.</li>
+<li><code>tmpfs mount</code>（Linux中）：临时数据卷，存于内存中（注意，并不是持久化到磁盘）。在容器的生命周期中，它能被容器用来存放非持久化的状态或敏感信息。</li>
 </ol>
 <p><img src="/images/volumetype.png" alt="volumetype"></p>
 <p><code>bind mount</code> 和 <code>volume</code> 很相似，这二者都依赖于主机目录，但是区别在于volume是可docker的存储区域相关的，<code>bind mount</code> 是直接和操作系统相关的。</p>
@@ -453,7 +456,9 @@
 </tbody>
 </table>
 <h3 id="network">network</h3>
-<p>另一个  Docker Object, 它是用来描述容器网络的对象，通过 <code>network</code> 子命令管理。当安装 Docker 时，它会自动创建三个网络。你可以使用以下 <code>docker network ls</code> 命令列出这些网络。</p>
+<p>另一个  Docker Object, 它是用来描述容器网络的对象，通过 <code>network</code> 子命令管理。</p>
+<p>我们能够用它对各个容器之间的网络进行配置，还可以在容器之间建立虚拟网络，将数个容器包括在内，同时与其他网络环境隔离。</p>
+<p>当安装 Docker 时，它会自动创建三个网络。你可以使用以下 <code>docker network ls</code> 命令列出这些网络。</p>
 <pre tabindex="0"><code>docker network ls
 NETWORK ID     NAME      DRIVER    SCOPE
 c4e5387e6d5a   bridge    bridge    local
@@ -468,8 +473,8 @@ b0e73e522eee   none      null      local
 <li><code>--net=none</code> 让 Docker 将新容器放到隔离的网络栈中，但是不进行网络配置。之后，用户可以自己进行配置。</li>
 </ul>
 <p>我们稍微了解一下 bridge 模式。</p>
-<p>当<code>Docker</code>进程启动时，会在主机上创建一个名为<code>docker0</code>的虚拟网桥，此主机上启动的<code>Docker</code>容器会连接到这个虚拟网桥上。虚拟网桥的工作方式和物理交换机类似，这样主机上的所有容器就通过交换机连在了一个二层网络中。从<code>docker0</code>子网中分配一个 IP 给容器使用，并设置 docker0 的 IP 地址为容器的<strong>默认网关</strong>。</p>
-<p>默认情况下，当我们<code>docker run</code>运行容器时，容器不会向外界公开其任何端口。要使端口可用于 Docker 外部的服务，或可用于在不同网络上运行的 Docker 容器，需要使用<code>--publish</code>or<code>-p</code>标志来做端口映射，而这个过程 Docker 实际是在<code>iptables</code>做了<code>DNAT</code>规则，实现端口转发。</p>
+<p>当 Docker 进程启动时，会在主机上创建一个名为 docker0 的虚拟网桥，此主机上启动的 Docker 容器会连接到这个虚拟网桥上。虚拟网桥的工作方式和物理交换机类似，这样主机上的所有容器就通过交换机连在了一个二层网络中。从docker0 子网中分配一个 IP 给容器使用，并设置 docker0 的 IP 地址为容器的<strong>默认网关</strong>。</p>
+<p>默认情况下，当我们 <code>docker run</code> 运行容器时，容器不会向外界公开其任何端口。要使端口可用于 Docker 外部的服务，或可用于在不同网络上运行的 Docker 容器，需要使用 <code>--publish</code> or <code>-p</code> 标志来做端口映射，而这个过程 Docker 实际是在 <code>iptables</code> 做了 <code>DNAT</code> 规则，实现端口转发。</p>
 <p><img src="/images/ovs-gre-docker.png" alt="ovs-gre-docker"></p>
 <h2 id="如何将我的服务容器化">如何将我的服务容器化</h2>
 <p>从上文我们已经知道，从服务到容器，中间的步骤是镜像，也就是说，实现容器化主要就是制作镜像。</p>
@@ -555,7 +560,7 @@ b0e73e522eee   none      null      local
         <li><a href="#那么-docker-以怎样的形式存在呢">那么 Docker 以怎样的形式存在呢？</a>
           <ul>
             <li><a href="#image">image</a></li>
-            <li><a href="#registry">registry</a></li>
+            <li><a href="#registry-和-repository">registry 和 repository</a></li>
             <li><a href="#volumes">volumes</a></li>
             <li><a href="#network">network</a></li>
           </ul>
